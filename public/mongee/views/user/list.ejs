@@ -1,0 +1,5 @@
+<%for(var i = 0; i < users.length ; i++){%>
+	<tr <%= users[i]%>>
+		<%= $.View('//mongee/views/user/show',users[i])%>
+	</tr>
+<%}%>
