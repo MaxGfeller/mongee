@@ -5,50 +5,61 @@ var express			= require("express");
 var Schema			= mongoose.Schema;
 var ObjectId		= Schema.ObjectId;
 
-var app 				= express.createServer();
-var db					= mongoose.connect("mongodb://127.0.0.1/mongee-dev");
-
+var db_host			= "127.0.0.1";
+var db_name			= "mongee-dev";
 var app_version	= "0.0.1";
 var app_port		= 3000;
+
+var app 				= express.createServer();
+var db					= mongoose.connect("mongodb://" + db_host + "/" + db_name);
+
+var func				= require("./func");
 
 
 app.configure(function(){
 	app.use(express.staticProvider(__dirname + '/public'));
 	app.use(express.bodyDecoder());
+	app.use(express.methodOverride());
 });
-
 
 /*
-* schema definitions
+* models
+*
+* all the model imports and mongoose mappings and stuff
+*
 */
-var Mongee_User = new Schema({
-	mail			: String,
-	name 			: String,
-	prename		: String, 
-	password 	: String,
-	birthday	: String
-});
+mongoose.model("User", require("./models/user").User);
+mongoose.model("Post", require("./models/post").Post);
+mongoose.model("Comment", require("./models/comment").Comment);
 
-mongoose.model("User", Mongee_User);
-var User = mongoose.model("User");
+var User		= mongoose.model("User");
+var Post 		= mongoose.model("Post");
+var Comment = mongoose.model("Comment");
+
 
 /*
 * mapping
+*
+* put all the mapping stuff below here
+*
 */
 app.get("/", function(req, res){
 	res.send("wut -- man this is forbidden", 403);
 });
 
-app.get("/user/new/:user_mail__64/:user_name/:user_prename/:user_password/:user_birthday?", function(req, res){
-	var u = new User();
-	u.mail = decode_base64(req.params.user_mail__64);
-	u.name = req.params.user_name;
-	u.prename = req.params.user_prename;
-	u.password = req.params.user_password;
-	u.birthday = req.params.user_birthday;
+app.put("/user/new", function(req, res){
+	var user = new User();
 	
-	u.save(function(){
-		res.send(stringify(u), 200);
+	for(var key in req.body.user) {
+		user.doc[key] = req.body.user[key];
+	}
+	
+	user.save(function(err){
+		if(!err) {
+			res.send(stringify(user), 200);
+		} else {
+			res.send(err.message, 403);
+		}
 	});
 });
 
@@ -62,19 +73,41 @@ app.get("/user/get/:user_id", function(req, res){
 	});
 });
 
-app.get("/user/sign_in/:user_mail__64/:user_password", function(req, res){
+app.post("/user/sign_in", function(req, res){
 	var u = null;
 	
-	User.findOne({mail : decode_base64(req.params.user_mail__64)}, function(error, user){
+	User.findOne({mail : req.body.user.mail}, function(error, user){
+		console.log("user " + user.mail + " logging in");
 		if(user) {
 			if(user.password == req.params.user_password) {
+				console.log("-- success, logged in now");
 				res.send(stringify(user), 200);
 			} else {
+				console.log("-- failed, password incorrect");
 				res.send("password is not correct", 403);
 			}
 		} else {
+			console.log("-- failed, no such user");
 			res.send("no user with that mail found", 404);
 		}
+	});
+});
+
+app.put("/post/new", function(req, res){
+	handle_authorized_request(req, res, function(req, res, user){
+		var post = new Post();
+		
+		for(var key in req.body.post) {
+			post.doc[key] = req.body.post[key];
+		}
+		
+		post.save(function(err){
+			if(!err) {
+				res.send(stringify(post), 200);
+			} else {
+				res.send(err.message, 500);
+			}
+		});
 	});
 });
 
@@ -83,10 +116,15 @@ app.get("/user/sign_in/:user_mail__64/:user_password", function(req, res){
 */
 app.listen(app_port);
 console.log("mongee version " + app_version + " now running on port " + app_port);
+console.log("");
 
 /*
 * private functions
+*
+* write all your private functions below here
 */
+
+
 function stringify(o) {
 	return JSON.stringify(o);
 }
@@ -102,7 +140,7 @@ function handle_authorized_request(req, res, fn) {
 		
 		User.findOne({_id : user_id, password : user_password}, function(error, user){
 			if(user) {
-				fn(req, res);
+				fn(req, res, user);
 			} else {
 				res.send("somethings wrong with your credentials...", 403);
 			}
@@ -114,7 +152,7 @@ function handle_authorized_request(req, res, fn) {
 	/*
 	allows you to do requests like this:
 	function get('/whatever', function(req, res) {
-		handle_authorized_request(req, res, function(req, res) {
+		handle_authorized_request(req, res, function(req, res, user) {
 			res.send("disco disco");
 		});
 	});
