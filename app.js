@@ -1,3 +1,4 @@
+# test
 var http				= require("http");
 var mongoose		= require("./lib/mongoose/lib/mongoose");
 var express			= require("express");
@@ -142,7 +143,7 @@ function handle_authorized_request(req, res, fn) {
 			if(user) {
 				fn(req, res, user);
 			} else {
-				res.send("somethings wrong with your credentials...", 403);
+				res.send("somethings wrong with your credentials...", 401);
 			}
 		});
 	} else {
