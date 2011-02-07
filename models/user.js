@@ -5,11 +5,12 @@ var ObjectId		= Schema.ObjectId;
 
 
 var User = new Schema({
-	mail			: String,
-	name 			: String,
-	prename		: String, 
-	password 	: String,
-	birthday	: String
+	mail				: String,
+	name 				: String,
+	prename			: String, 
+	password 		: String,
+	birthday		: String,
+	created_at	: Date
 });
 
 User.pre("save", function(next){
