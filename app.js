@@ -1,4 +1,3 @@
-# test
 var http				= require("http");
 var mongoose		= require("./lib/mongoose/lib/mongoose");
 var express			= require("express");
@@ -48,7 +47,7 @@ app.get("/", function(req, res){
 	res.send("wut -- man this is forbidden", 403);
 });
 
-app.put("/user/new", function(req, res){
+app.put("/user", function(req, res){
 	var user = new User();
 	
 	for(var key in req.body.user) {
@@ -94,7 +93,7 @@ app.post("/user/sign_in", function(req, res){
 	});
 });
 
-app.put("/post/new", function(req, res){
+app.put("/post", function(req, res){
 	handle_authorized_request(req, res, function(req, res, user){
 		var post = new Post();
 		
