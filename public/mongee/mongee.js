@@ -5,14 +5,17 @@ steal.plugins(
 	'jquery/controller/view',		// lookup views with the controller's name
 	'jquery/model',					// Ajax wrappers
 	'jquery/dom/fixture',			// simulated Ajax requests
-	'jquery/dom/form_params')		// form data helper
+	'jquery/dom/form_params',		// form data helper
 	
-	.css('mongee')	// loads styles
+	'jquery/cookie',				// jQuery Cookie plugin
+	'jquery/md5')					// jQuery MD5 hash algorithm function
+	
+	.css('mongee')					// loads styles
 
 	.resources()					// 3rd party script's (like jQueryUI), in resources folder
 
-	.models('user')						// loads files in models folder 
+	.models('user')					// loads files in models folder 
 
-	.controllers('login', 'user')					// loads files in controllers folder
+	.controllers('login', 'index')			// loads files in controllers folder
 
 	.views();						// adds views to be added to build

@@ -76,6 +76,27 @@ $.Model.extend('Mongee.Models.User',
 			data: attrs,
 			fixture: "-restCreate" //uses $.fixture.restCreate for response.
 		});
+	},
+	/**
+	 * Trys to login user.
+	 * Returns a JSON object of the user, if the credentials were not ok a 401
+	 * @param {Object} attrs A user's attributes.
+	 * @param {Function} success a callback function that indicates a successful create.  The data that comes back must have an ID property.
+	 * @param {Function} error a callback that should be called with an object of errors.
+	 */
+	login: function( attrs, success, error  ){ 
+		$.ajax({
+			url: '/user/sign_in',
+			type: 'post',
+			dataType: 'json', 
+			success: success,
+			error: error,   
+			complete: function(xhr, statusText) { 
+		        //alert('Status: ' + xhr.status); 
+		    },
+			data: attrs,
+			//fixture: "-restCreate" //uses $.fixture.restCreate for response.
+		});
 	}
 },
 /* @Prototype */
