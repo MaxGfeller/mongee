@@ -9,7 +9,13 @@ var Post = new Schema({
 	on_wall			: [ObjectId],
 	content			: String, 
 	link		 		: String,
-	comment			: [ObjectId]
+	comment			: [ObjectId],
+	created_at	: Date
 });
+
+Post.pre("save", function(next){
+	this.set("created_at", new Date());
+	next();
+}):
 
 exports.Post = Post;
