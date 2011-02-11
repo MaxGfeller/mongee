@@ -6,11 +6,12 @@ var auth = require("../util/authorized_controller");
 module.exports = {
 	
 	mapping: {
-		"index" : {"url":"/users","method":"get"},
-		"create": {"url":"/users","method":"put"},
-		"read"	: {"url":"/users/:id","method":"get"},
-		"update": {"url":"/users","method":"post"},
-		"delete": {"url":"/me","method":"delete"}
+		"index" 	: {"url":"/users", "method":"get"},
+		"create"	: {"url":"/users", "method":"put"},
+		"read"		: {"url":"/users/:id", "method":"get"},
+		"update"	: {"url":"/users", "method":"post"},
+		"delete"	: {"url":"/me", "method":"delete"}, 
+		"sign_in"	: {"url":"/users/sign_in", "method":"post"}
 	},
 	
 	// GET /users
@@ -79,6 +80,33 @@ module.exports = {
 				}
 			});
 		});
-	}	
+	}, 
+	
+	// POST /users/sign_in
+	sign_in: function(req, res) {
+		var u = null;
+	
+		if(req.body.user.mail && req.body.user.password) {
+			User.findOne({mail : req.body.user.mail}, function(error, user){
+				console.log("user " + user.mail + " logging in");
+				if(user) {
+					console.log("actual pw: " + user.password + " vs submitted password: " + req.body.user.password);
+					if(user.password == req.body.user.password) {
+						console.log("-- success, logged in now");
+						res.send(JSON.stringify(user), 200);
+					} else {
+						console.log("-- failed, password incorrect");
+						res.send("password is not correct", 401);
+					}
+				} else {
+					console.log("-- failed, no such user");
+					res.send("no user with that mail found", 404);
+				}
+			});
+		} else {
+			console.log("de scheller failt widrmol...");
+			res.send("fail", 500);
+		}
+	}
 	
 }
