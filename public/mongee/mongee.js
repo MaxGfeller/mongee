@@ -16,6 +16,6 @@ steal.plugins(
 
 	.models('user')					// loads files in models folder 
 
-	.controllers('login', 'index')			// loads files in controllers folder
+	.controllers('main', 'index', 'profile', 'header')			// loads files in controllers folder
 
 	.views();						// adds views to be added to build

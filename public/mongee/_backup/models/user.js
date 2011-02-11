@@ -84,17 +84,22 @@ $.Model.extend('Mongee.Models.User',
 	 * @param {Function} success a callback function that indicates a successful create.  The data that comes back must have an ID property.
 	 * @param {Function} error a callback that should be called with an object of errors.
 	 */
-	login: function( attrs, success, error  ){ 
+	login: function( attrs ){ 
 		$.ajax({
-			url: '/users/sign_in',
+			url: '/user/sign_in',
 			type: 'post',
 			dataType: 'json', 
-			success: success,
-			error: error,   
+			success: function(data, state) {
+				alert(state + ': ' + data);
+			},
+			error: function(data, state) {
+				alert(state + ': ' + data);
+			},   
 			complete: function(xhr, statusText) { 
-		        //alert('Status: ' + xhr.status); 
+		        alert('Status: ' + xhr.status); 
 		    },
-			data: attrs
+			data: attrs,
+			//fixture: "-restCreate" //uses $.fixture.restCreate for response.
 		});
 	}
 },

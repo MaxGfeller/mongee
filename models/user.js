@@ -3,13 +3,13 @@ var mongoose		= require("../lib/mongoose/lib/mongoose");
 var Schema			= mongoose.Schema;
 var ObjectId		= Schema.ObjectId;
 
-
 var User = new Schema({
-	mail			: String,
+	mail			: {type:String, index:true, required:true},
 	name 			: String,
 	prename		: String, 
 	password 	: String,
-	birthday	: String
+	birthday	: String,
+	created_at:	{type : Date, default : Date.now}
 });
 
 User.pre("save", function(next){
@@ -21,7 +21,6 @@ User.pre("save", function(next){
 			next(new Error("a user with that mail already exists man... dont fuck with me!!!"));
 		} else {
 			console.log("-- success!");
-			this.set("created_at", new Date());
 			next();
 		}
 	});

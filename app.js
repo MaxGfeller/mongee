@@ -10,7 +10,7 @@ var ObjectId		= Schema.ObjectId;
 var db_host			= "127.0.0.1";
 var db_name			= "mongee-dev";
 var app_version	= "0.0.1";
-var app_port		= 3001;
+var app_port		= 3000;
 
 var app 				= express.createServer();
 var db					= mongoose.connect("mongodb://" + db_host + "/" + db_name);
