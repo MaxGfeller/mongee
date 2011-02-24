@@ -1,5 +1,7 @@
 var fs = require("fs");
 
+var mappingString = "";
+
 function bootController(app, file) {
   var name = file.replace('.js', '');
   var actions = require('../controllers/' + name);
@@ -17,18 +19,22 @@ function bootController(app, file) {
 		  		case 'get':
 		  					app.get(a.url, fn);
 		  					console.log("get " + a.url);
+		  					mappingString += "GET " + a.url + "<br />";
 		  					break;
 		  		case 'post':
 		  					app.post(a.url, fn);
 		  					console.log("post " + a.url);
+		  					mappingString += "POST " + a.url + "<br />";
 		  					break;
 		  		case 'put':
 		  					app.put(a.url, fn);
 		  					console.log("put " + a.url);
+		  					mappingString += "PUT " + a.url + "<br />";
 		  					break;
 		  		case 'delete':
 		  					app.del(a.url, fn);
 		  					console.log("delete " + a.url);
+		  					mappingString += "DELETE " + a.url + "<br />";
 		  					break;
 		  	}
 		  } else {
@@ -45,6 +51,9 @@ module.exports = {
         files.forEach(function(file){
             console.log("booting controller " + file);
             bootController(app, file);
+        });
+        app.get("/show_available_interfaces", function(req, res){
+        	res.send(mappingString);
         });
     });
 	}
