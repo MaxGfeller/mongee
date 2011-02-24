@@ -27,8 +27,10 @@ module.exports = {
 			
 			User.findOne({_id : user_id, password : user_password}, function(error, user){
 				if(user) {
+					console.log("user " + user.mail + " successfully authenticated");
 					fn(req, res, user);
 				} else {
+					console.log("failed authorization");
 					res.send("somethings wrong with your credentials..." + user_id + " " + user_password, 403);
 				}
 			});
