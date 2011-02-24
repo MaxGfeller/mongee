@@ -15,6 +15,16 @@ var app_port		= 3000;
 var app 				= express.createServer();
 var db					= mongoose.connect("mongodb://" + db_host + "/" + db_name);
 
+/*
+* models
+*
+* all the model imports and mongoose mappings and stuff
+*
+*/
+mongoose.model("User", require("./models/user").User);
+mongoose.model("Comment", require("./models/comment").Comment);
+mongoose.model("Post", require("./models/post").Post);
+
 
 app.configure(function(){
 	app.use(express.logger({ format: ':method :url :status' }));
@@ -24,16 +34,6 @@ app.configure(function(){
 	
 	controller.bootControllers(app);
 });
-
-/*
-* models
-*
-* all the model imports and mongoose mappings and stuff
-*
-*/
-mongoose.model("User", require("./models/user").User);
-mongoose.model("Post", require("./models/post").Post);
-mongoose.model("Comment", require("./models/comment").Comment);
 
 
 app.listen(app_port);
