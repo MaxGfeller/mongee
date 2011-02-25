@@ -4,15 +4,16 @@ var Schema			= mongoose.Schema;
 var ObjectId		= Schema.ObjectId;
 
 var User = new Schema({
-	mail			: {type:String, index:true, required:true},
+	mail			: {type:String, index:true, required:true, safe:true},
 	name 			: String,
 	prename		: String, 
 	password 	: String,
 	birthday	: String,
-	created_at:	{type : Date, default : Date.now}
+	created_at:	{type : Date, default : Date.now},
+	friends		: [ObjectId]
 });
 
-User.pre("save", function(next){
+/*User.pre("save", function(next){
 	mongoose.model("User", require("./user").User)
 	console.log("creating new user " + this.get("mail"));
 	mongoose.model("User").find({mail : this.get("mail")}, function(error, user){
@@ -24,7 +25,7 @@ User.pre("save", function(next){
 			next();
 		}
 	});
-});
+});*/
 
 User.path("name").set(function(v){
 	return v.capitalize();
