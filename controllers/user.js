@@ -3,15 +3,45 @@ var mongoose		= require("../lib/mongoose/lib/mongoose");
 var User = mongoose.model("User");
 var auth = require("../util/authorized_controller");
 
+function classify(arg) {
+	return Object.prototype.toString.call(arg);
+}
+
 module.exports = {
 	
 	mapping: {
-		"index" 	: {"url":"/users", "method":"get"},
-		"create"	: {"url":"/users", "method":"put"},
-		"read"		: {"url":"/users/:id", "method":"get"},
-		"update"	: {"url":"/users", "method":"post"},
-		"delete"	: {"url":"/me", "method":"delete"}, 
-		"sign_in"	: {"url":"/users/sign_in", "method":"post"}
+		"index" 					: {
+			"url":"/users", 
+			"method":"get"
+		},
+		"create"					: {
+			"url":"/users", 
+			"method":"put"
+		},
+		"get_my_friends" 	: {
+			"url":"/users/my/friends", 
+			"method":"get"
+		},
+		"read"						: {
+			"url":"/users/:id", 
+			"method":"get"
+		},
+		"update"					: {
+			"url":"/users", 
+			"method":"post"
+		},
+		"delete"					: {
+			"url":"/me", 
+			"method":"delete"
+		}, 
+		"sign_in"					: {
+			"url":"/users/sign_in", 
+			"method":"post"
+		},
+		"add_friend" 			: {
+			"url":"/users/add_friend/:user_id", 
+			"method":"post"
+		}, 
 	},
 	
 	// GET /users
@@ -74,7 +104,7 @@ module.exports = {
 		auth.handle_authorized_request(req, res, function(req, res, user){
 			User.findOne({_id : user._id, mail : user.mail, password : user.password}, function(error, user){
 				if(!error) {
-					console.log("deleting user " + user.mail + " now");
+					console.log("deleting user " + user.get("mail") + " now");
 				} else {
 					res.send("fail", 500);
 				}
@@ -104,9 +134,43 @@ module.exports = {
 				}
 			});
 		} else {
-			console.log("de scheller failt widrmol...");
+			console.log("no credentials submitted");
 			res.send("fail", 500);
 		}
+	}, 
+	
+	// POST /users/add_friend/:user_id
+	add_friend: function(req, res) {
+		auth.handle_authorized_request(req, res, function(req, res, user){
+			var objectId = req.params.user_id;
+			
+			user.friends.push(objectId);
+			user.save(function(err){
+				if(err) {
+					res.send("some error occured", 500);
+				} else {
+					res.send("ok", 200);
+				}
+			});
+		});
+	}, 
+	
+	// GET /users/my/friends
+	get_my_friends: function(req, res) {
+		auth.handle_authorized_request(req, res, function(req, res, user){
+			var my_friends = [];
+			
+			var friends = user.get("friends");
+
+			for(var i = 0; i < friends.length; i++) {
+				User.findOne({_id : friends[i]}, function(err, friend){
+					if(friend) {
+						my_friends[my_friends.length] = friend;
+					}
+				});
+			}
+			res.send(JSON.stringify(my_friends), 200);
+		});
 	}
 	
 }
