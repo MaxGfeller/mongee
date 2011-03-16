@@ -2,11 +2,13 @@ var fs = require("fs");
 
 var mappingString = "";
 
+function add_to_mapping_string(method, url, description, auth) {
+	mappingString += "<div style='width: 400px; height: 20px; padding: 5px; background-color: #ccc; color: #000; font-family: Arial, Verdana, sans-serif'><b>" + method + " " + url + "</b></div><div style='width: 400px; padding: 5px; background-color: #eee; color: #000; font-family: Arial, Verdana, sans-serif'>" + description + "<br /><b>Auth:</b> " + auth + "</div><br />";
+}
+
 function bootController(app, file) {
   var name = file.replace('.js', '');
   var actions = require('../controllers/' + name);
-  var plural = name + 's';
-  var prefix = '/' + plural;
 
 	var mapping = actions["mapping"];
 	
@@ -15,26 +17,23 @@ function bootController(app, file) {
 	  
 	  if(typeof(fn) === "function") {
 		  if(a = mapping[action]) {
+		  	add_to_mapping_string(a.method, a.url, a.description, a.auth);
 		  	switch(a.method) {
 		  		case 'get':
 		  					app.get(a.url, fn);
 		  					console.log("get " + a.url);
-		  					mappingString += "GET " + a.url + "<br />";
 		  					break;
 		  		case 'post':
 		  					app.post(a.url, fn);
 		  					console.log("post " + a.url);
-		  					mappingString += "POST " + a.url + "<br />";
 		  					break;
 		  		case 'put':
 		  					app.put(a.url, fn);
 		  					console.log("put " + a.url);
-		  					mappingString += "PUT " + a.url + "<br />";
 		  					break;
 		  		case 'delete':
 		  					app.del(a.url, fn);
 		  					console.log("delete " + a.url);
-		  					mappingString += "DELETE " + a.url + "<br />";
 		  					break;
 		  	}
 		  } else {
