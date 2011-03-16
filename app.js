@@ -24,6 +24,7 @@ var db					= mongoose.connect("mongodb://" + db_host + "/" + db_name);
 mongoose.model("User", require("./models/user").User);
 mongoose.model("Comment", require("./models/comment").Comment);
 mongoose.model("Post", require("./models/post").Post);
+mongoose.model("Photo", require("./models/photo").Photo);
 
 
 app.configure(function(){
