@@ -11,12 +11,7 @@ var Post = new Schema({
 	content			: String, 
 	link		 		: String,
 	comment			: [Comment],
-	created_at	: Date
-});
-
-Post.pre("save", function(next){
-	this.set("created_at", new Date());
-	next();
+	created_at	:	{type : Date, default : Date.now}
 });
 
 exports.Post = Post;
