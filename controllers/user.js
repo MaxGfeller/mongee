@@ -7,41 +7,69 @@ function classify(arg) {
 	return Object.prototype.toString.call(arg);
 }
 
+String.prototype.capitalize = function(){ 
+    return this.replace(/\w+/g, function(a){
+        return a.charAt(0).toUpperCase() + a.substr(1).toLowerCase();
+    });
+};
+
 module.exports = {
 	
 	mapping: {
 		"index" 					: {
 			"url":"/users", 
-			"method":"get"
+			"method":"get", 
+			"description":"retrieve all registered users",
+			"auth":false
 		},
 		"create"					: {
 			"url":"/users", 
-			"method":"put"
+			"method":"put",
+			"description":"create a new user",
+			"auth":false
 		},
 		"get_my_friends" 	: {
 			"url":"/users/my/friends", 
-			"method":"get"
+			"method":"get",
+			"description":"get all your friends",
+			"auth":true
 		},
 		"read"						: {
 			"url":"/users/:id", 
-			"method":"get"
+			"method":"get",
+			"description":"NEEDS TO BE UPDATED get a single user by id",
+			"auth":false
 		},
 		"update"					: {
 			"url":"/users", 
-			"method":"post"
+			"method":"post",
+			"description":"NEEDS TO BE UPDATED update a given user",
+			"auth":false
 		},
 		"delete"					: {
 			"url":"/me", 
-			"method":"delete"
+			"method":"delete",
+			"description":"delete your own user, attention: cant be undone",
+			"auth":true
 		}, 
 		"sign_in"					: {
 			"url":"/users/sign_in", 
-			"method":"post"
+			"method":"post",
+			"description":"sign yourself in",
+			"auth":false
 		},
 		"add_friend" 			: {
 			"url":"/users/add_friend/:user_id", 
-			"method":"post"
+			"method":"post",
+			"description":"add a friend by user_id",
+			"auth":true
 		}, 
+		"find_users"		: {
+			"url":"/users/find/:param",
+			"method":"get",
+			"description":"find users whose name or prename start with the given param",
+			"auth":true
+		}
 	},
 	
 	// GET /users
@@ -118,18 +146,13 @@ module.exports = {
 	
 		if(req.body.user.mail && req.body.user.password) {
 			User.findOne({mail : req.body.user.mail}, function(error, user){
-				console.log("user " + user.mail + " logging in");
 				if(user) {
-					console.log("actual pw: " + user.password + " vs submitted password: " + req.body.user.password);
 					if(user.password == req.body.user.password) {
-						console.log("-- success, logged in now");
 						res.send(JSON.stringify(user), 200);
 					} else {
-						console.log("-- failed, password incorrect");
 						res.send("password is not correct", 401);
 					}
 				} else {
-					console.log("-- failed, no such user");
 					res.send("no user with that mail found", 404);
 				}
 			});
@@ -158,18 +181,29 @@ module.exports = {
 	// GET /users/my/friends
 	get_my_friends: function(req, res) {
 		auth.handle_authorized_request(req, res, function(req, res, user){
-			var my_friends = [];
-			
 			var friends = user.get("friends");
 
-			for(var i = 0; i < friends.length; i++) {
-				User.findOne({_id : friends[i]}, function(err, friend){
-					if(friend) {
-						my_friends[my_friends.length] = friend;
-					}
-				});
-			}
-			res.send(JSON.stringify(my_friends), 200);
+			User.find({_id : { $in: friends}}, function(err, friends){
+				if(friends) {
+					res.send(JSON.stringify(friends), 200);
+				} else {
+					res.send("you have no friends", 404);
+				}
+			});
+		});
+	}, 
+	
+	// GET /users/find/:param
+	find_users: function(req, res) {
+		auth.handle_authorized_request(req, res, function(req, res, user){
+			var reg = new RegExp("^" + req.params.param.capitalize());
+			User.find({$or: [{name : reg}, {prename : reg}]}, function(err, users){
+				if(users) {
+					res.send(JSON.stringify(users), 200);
+				} else {
+					res.send("no users found", 404);
+				}
+			});
 		});
 	}
 	
