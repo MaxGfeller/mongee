@@ -1,4 +1,4 @@
-var mongoose		= require("../lib/mongoose/lib/mongoose");
+var mongoose		= require("mongoose");
 
 var User = mongoose.model("User");
 var auth = require("../util/authorized_controller");
