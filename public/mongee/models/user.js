@@ -11,19 +11,45 @@ $.Model.extend('Mongee.Models.User',
 {
 	/**
  	 * Retrieves users data from your backend services.
+ 	 * @param {String} id a unique id representing a user
+ 	 * @param {String} mail the mailaddress
+ 	 * @param {String} pw the password
+ 	 * @param {Function} success a callback function that returns wrapped user objects.
+ 	 * @param {Function} error a callback function for an error in the ajax request.
+ 	 */
+	find: function( id, pw, success, error ){
+		$.ajax({
+			url: '/users/' + id,
+			type: 'get',
+			dataType: 'json',
+			success: success,
+			error: error/*,  
+	    	beforeSend: function(xhr) {
+	    		xhr.setRequestHeader('Authorization', 'Basic ' + $.base64Encode(id + ":" + pw)); 
+	    	}*/
+		});
+	}, 
+	
+	/**
+ 	 * Retrieves users data from your backend services.
  	 * @param {Object} params params that might refine your results.
  	 * @param {Function} success a callback function that returns wrapped user objects.
  	 * @param {Function} error a callback function for an error in the ajax request.
  	 */
 	findAll: function( params, success, error ){
 		$.ajax({
-			url: '/user',
+			url: '/users/find/' + params.param,
 			type: 'get',
 			dataType: 'json',
-			data: params,
-			success: this.callback(['wrapMany',success]),
+			success: success,
 			error: error,
-			fixture: "//mongee/fixtures/users.json.get" //calculates the fixture path from the url and type.
+			complete: function(xhr, statusText) { 
+		        //alert('Status: ' + xhr.status + ' ___ param: ' + params.param + ' ___ url: ' + '/users/find/' + params.param); 
+		    },  
+	    	beforeSend: function(xhr) {
+	    		xhr.setRequestHeader('Authorization', 'Basic ' + $.base64Encode(params.id + ":" + params.pw)); 
+	    	}
+			//fixture: "//mongee/fixtures/users.json.get" //calculates the fixture path from the url and type.
 		});
 	},
 	/**
@@ -41,7 +67,7 @@ $.Model.extend('Mongee.Models.User',
 			data: attrs,
 			success: success,
 			error: error,
-			fixture: "-restUpdate" //uses $.fixture.restUpdate for response.
+			//fixture: "-restUpdate" //uses $.fixture.restUpdate for response.
 		});
 	},
 	/**
@@ -57,7 +83,7 @@ $.Model.extend('Mongee.Models.User',
 			dataType: 'json',
 			success: success,
 			error: error,
-			fixture: "-restDestroy" // uses $.fixture.restDestroy for response.
+			//fixture: "-restDestroy" // uses $.fixture.restDestroy for response.
 		});
 	},
 	/**
@@ -74,7 +100,7 @@ $.Model.extend('Mongee.Models.User',
 			success: success,
 			error: error,
 			data: attrs,
-			fixture: "-restCreate" //uses $.fixture.restCreate for response.
+			//fixture: "-restCreate" //uses $.fixture.restCreate for response.
 		});
 	},
 	/**
@@ -84,17 +110,17 @@ $.Model.extend('Mongee.Models.User',
 	 * @param {Function} success a callback function that indicates a successful create.  The data that comes back must have an ID property.
 	 * @param {Function} error a callback that should be called with an object of errors.
 	 */
-	login: function( attrs, success, error  ){ 
+	login: function( params, success, error  ){ 
 		$.ajax({
 			url: '/users/sign_in',
 			type: 'post',
-			dataType: 'json', 
+			dataType: 'json',
+			data: params, 
 			success: success,
 			error: error,   
 			complete: function(xhr, statusText) { 
 		        //alert('Status: ' + xhr.status); 
-		    },
-			data: attrs
+		    }
 		});
 	}
 },

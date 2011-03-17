@@ -1,2 +1,153 @@
-body {font-family: verdana}
-td {padding: 3px;}
+* {
+	margin: 0;
+	padding: 0;	
+}
+
+body {
+	font-family: Arial;
+}
+
+#login {
+	width: 800px;
+	padding: 10px;
+	margin: 20px auto 0 auto;
+	border: 1px solid #000;
+}
+
+#login h1 {
+	font-weight: normal;
+	text-align: center;
+	color: #000;
+}
+
+#login_form {
+	display: block;
+	width: 500px;
+	margin: 0 auto 0 auto;
+}
+
+#login_form .login_row {
+	padding: 10px;	
+}
+
+#login_form .login_row label {
+	float: left;
+	width: 100px;
+}
+
+#login_form .login_row input {
+}
+
+/********************************/
+
+#header {
+	height: 105px;
+	background-image: url(img/banner.jpg);
+}
+
+#banner {
+	width: 1000px;
+	margin: 0 auto 0 auto;
+}
+
+#banner #logo {
+	float: left;
+	font-size: 36pt;
+	color: #dcdcdc;
+	padding: 20px 0 0 0;
+}
+
+#banner #search {
+	margin: 0 0 0 300px;
+	padding-top: 40px;
+}
+
+#banner #searchfield {
+	padding: 3px 5px 2px 5px;
+	width: 200px;
+}
+
+#banner #searchresults {
+	position: absolute;
+	width: 210px;
+	border-width: 0 1px 1px 1px;
+	border-style: solid;
+	border-color: #ddd;
+	background-color:#fff;
+	z-index: 100;
+}
+#banner #searchresults ul {
+	list-style-type: none;
+}
+
+#banner #searchresults li {
+	margin: 0 5px -1px 5px;
+	border-bottom: 1px solid #ddd;
+}
+
+#banner #searchresults li a {
+	display: block;
+	padding: 5px 5px 5px 5px;
+	color: #000;
+	text-decoration: none;
+}
+
+
+#banner #searchresults a:hover {
+	background-color: #eee;
+}
+
+/********************************/
+
+#mainframe {
+	width: 1000px;
+	margin: 0 auto 0 auto;
+	border-width: 0 1px 0 1px;
+	border-style: solid;
+	border-color: #dcdcdc;
+}
+
+/********************************/
+
+#sidebar {
+	float: left;
+	width: 200px;
+	margin-right: -1px;
+	border-right: 1px solid #dcdcdc;
+}
+
+#profile_menu {
+	height: 30px;	
+	margin-left: 200px;
+	background-image: url(img/menu.jpg);
+	list-style-type: none;
+}
+
+#profile_menu li {
+	float: left;
+	width: 125px;
+}
+
+#profile_menu li a {
+	display: block;	
+	height: 25px;
+	padding: 5px 0 0 0;
+	color: #000;
+	text-decoration: none;
+	text-align: center;
+}
+
+#profile_menu li a:hover {
+	color: #fff;
+	background-image: url(img/menu_active.jpg);
+}
+
+#profile_menu li a.active {
+	color: #fff;
+	background-image: url(img/menu_active.jpg);
+}
+
+#profile_content {
+	margin-left: 200px;
+	border-left: 1px solid #dcdcdc;
+}

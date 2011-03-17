@@ -1,3 +1,13 @@
+/**
+ * @page mongee Mongee
+ * @tag home
+ *
+ * ###Mongee
+ *  
+ * Mongee is a Social Networking Platform
+ *  
+ */
+
 steal.plugins(	
 	'jquery/controller',			// a widget factory
 	'jquery/controller/subscribe',	// subscribe to OpenAjax.hub
@@ -8,7 +18,9 @@ steal.plugins(
 	'jquery/dom/form_params',		// form data helper
 	
 	'jquery/cookie',				// jQuery Cookie plugin
-	'jquery/md5')					// jQuery MD5 hash algorithm function
+	'jquery/md5',					// jQuery MD5 hash algorithm function
+	'jquery/base64',				// jQuery BASE64 functions
+	'jquery/focus')					// jQuery plugin: checks if a element is focused
 	
 	.css('mongee')					// loads styles
 
