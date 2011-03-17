@@ -34,8 +34,9 @@ app.configure(function(){
 	app.use(express.methodOverride());
 	
 	controller.bootControllers(app);
+	
+	console.log("mongee version " + app_version + " now running on port " + app_port);
 });
 
 
 app.listen(app_port);
-console.log("mongee version " + app_version + " now running on port " + app_port);
