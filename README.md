@@ -13,7 +13,7 @@ example in the office.
 
 Do the following to run mongee on your own server:
 
-1. Install node.js (http://www.nodejs.org)
+1. Install node.js (http://www.nodejs.org) and npm (http://npmjs.org)
 2. Install MongoDB (http://mongodb.org)
 3. Get the following modules using npm:
    `express@1.0.3`
@@ -37,4 +37,8 @@ The most requests above require an authentication, therefore a
 
 This is a basic authorization and includes the string 
 `Basic user_id:user_password`.
+
+## Contribute
+
+If you want to contribute, feel free to contact me on GitHub.
 
