@@ -1,6 +1,6 @@
 var http				= require("http");
 var fs					= require("fs");
-var mongoose		= require("./lib/mongoose/lib/mongoose");
+var mongoose		= require("mongoose");
 var express			= require("express");
 var controller	= require("./util/controller");
 
