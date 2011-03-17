@@ -15,6 +15,10 @@ Do the following to run mongee on your own server:
 
 1. Install node.js (http://www.nodejs.org)
 2. Install MongoDB (http://mongodb.org)
+3. Get the following modules using npm:
+   `express@1.0.3`
+   `formidable@0.9.11`
+   `mongoose@1.1.5`
 3. Create a new directory for node and clone the source: 
    `git clone git@github.com:MaxGfeller/mongee.git`
 
