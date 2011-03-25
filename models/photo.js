@@ -15,10 +15,10 @@ mongoose.model("MarkOnPhoto", MarkOnPhoto);
 
 var Photo = new Schema({
 	user 				: ObjectId,
+	filename		: String,
 	description : String,
 	comments		: [Comment],
 	marks				: [MarkOnPhoto],
-	album				: ObjectId,
 	created_at	:	{type : Date, default : Date.now}
 });
 
