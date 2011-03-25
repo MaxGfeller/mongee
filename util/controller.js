@@ -21,19 +21,19 @@ function bootController(app, file) {
 		  	switch(a.method) {
 		  		case 'get':
 		  					app.get(a.url, fn);
-		  					console.log("get " + a.url);
+		  					console.log("initialized get " + a.url);
 		  					break;
 		  		case 'post':
 		  					app.post(a.url, fn);
-		  					console.log("post " + a.url);
+		  					console.log("initialized post " + a.url);
 		  					break;
 		  		case 'put':
 		  					app.put(a.url, fn);
-		  					console.log("put " + a.url);
+		  					console.log("initialized put " + a.url);
 		  					break;
 		  		case 'delete':
 		  					app.del(a.url, fn);
-		  					console.log("delete " + a.url);
+		  					console.log("initialized delete " + a.url);
 		  					break;
 		  	}
 		  } else {
