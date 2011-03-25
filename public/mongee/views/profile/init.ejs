@@ -1,53 +1,15 @@
 <div id='sidebar'>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf<br>
-	asdf
 </div>
 
+<div id='profile_header' style='margin-left: 200px; padding: 5px 5px 5px 10px; background-color: rgb(22,100,148);'>
+</div>
 
 <ul id='profile_menu'>
-	<li class='wall'><a href='#'>Wall</a></li>
-	<li class='infos'><a href='#'>Infos</a></li>
-	<li class='pictures'><a href='#'>Pictures</a></li>
-	<li class='friends'><a href='#'>Friends</a></li>
+	<li class='wall'><a href='#wall'>Wall</a></li>
+	<li class='info'><a href='#info'>Infos</a></li>
+	<li class='pictures'><a href='#pictures'>Pictures</a></li>
+	<li class='friends'><a href='#friends'>Friends</a></li>
 </ul>
 
 <div id='profile_content'>
-	<%$.each( jQuery.parseJSON(users), function( index, value ) {%><!-- this.Class. -->
-		<div class='<%=index%>'>
-			<strong><%=index%></strong> :
-			<%=value%>
-		</div>
-	<%});%>
 </div>

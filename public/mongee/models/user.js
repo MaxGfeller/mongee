@@ -17,9 +17,9 @@ $.Model.extend('Mongee.Models.User',
  	 * @param {Function} success a callback function that returns wrapped user objects.
  	 * @param {Function} error a callback function for an error in the ajax request.
  	 */
-	find: function( id, pw, success, error ){
+	find: function( params, success, error ){
 		$.ajax({
-			url: '/users/' + id,
+			url: '/users/' + params.id,
 			type: 'get',
 			dataType: 'json',
 			success: success,
@@ -49,7 +49,25 @@ $.Model.extend('Mongee.Models.User',
 	    	beforeSend: function(xhr) {
 	    		xhr.setRequestHeader('Authorization', 'Basic ' + $.base64Encode(params.id + ":" + params.pw)); 
 	    	}
-			//fixture: "//mongee/fixtures/users.json.get" //calculates the fixture path from the url and type.
+		});
+	},
+	
+	/**
+ 	 * Retrieves users data from your backend services.
+ 	 * @param {Object} params params that might refine your results.
+ 	 * @param {Function} success a callback function that returns wrapped user objects.
+ 	 * @param {Function} error a callback function for an error in the ajax request.
+ 	 */
+	findMyFriends: function( params, success, error ){
+		$.ajax({
+			url: '/users/my/friends',
+			type: 'get',
+			dataType: 'json',
+			success: success,
+			error: error,
+	    	beforeSend: function(xhr) {
+	    		xhr.setRequestHeader('Authorization', 'Basic ' + $.base64Encode(params.id + ":" + params.pw)); 
+	    	}
 		});
 	},
 	/**

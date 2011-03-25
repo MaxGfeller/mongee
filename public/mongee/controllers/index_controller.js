@@ -11,13 +11,7 @@ jQuery.Controller.extend('Mongee.Controllers.Index',
 /* @Prototype */
 {
 	init: function () {
-		$(document.body).html(this.view('init', {} ));
-		$('#header').mongee_header();
-		$('#mainframe').mongee_profile();
-	},
-	
-	'#searchform submit': function( el, ev ){
-		ev.preventDefault();
+
 	}
 
 });
