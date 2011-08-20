@@ -1,8 +1,8 @@
 var mongoose		= require("mongoose");
 
-var Post = mongoose.model("Post");
-var Comment = mongoose.model("Comment");
-var auth = require("../util/authorized_controller");
+var Post 			= mongoose.model("Post");
+var Comment 		= mongoose.model("Comment");
+var auth 			= require("../util/authorized_controller");
 
 module.exports = {
 	

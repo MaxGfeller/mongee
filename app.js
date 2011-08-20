@@ -1,19 +1,19 @@
 var http				= require("http");
-var fs					= require("fs");
-var mongoose		= require("mongoose");
+var fs				= require("fs");
+var mongoose			= require("mongoose");
 var express			= require("express");
-var controller	= require("./util/controller");
+var controller		= require("./util/controller");
 
 var Schema			= mongoose.Schema;
-var ObjectId		= Schema.ObjectId;
+var ObjectId			= Schema.ObjectId;
 
 var db_host			= "127.0.0.1";
 var db_name			= "mongee-dev";
-var app_version	= "0.0.1";
-var app_port		= 3000;
+var app_version		= "0.0.1";
+var app_port			= 3000;
 
 var app 				= express.createServer();
-var db					= mongoose.connect("mongodb://" + db_host + "/" + db_name);
+var db				= mongoose.connect("mongodb://" + db_host + "/" + db_name);
 
 /*
 * models

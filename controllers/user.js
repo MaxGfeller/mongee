@@ -1,7 +1,7 @@
 var mongoose		= require("mongoose");
 
-var User = mongoose.model("User");
-var auth = require("../util/authorized_controller");
+var User 			= mongoose.model("User");
+var auth 			= require("../util/authorized_controller");
 
 function classify(arg) {
 	return Object.prototype.toString.call(arg);
