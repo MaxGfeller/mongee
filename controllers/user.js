@@ -16,55 +16,55 @@ String.prototype.capitalize = function(){
 module.exports = {
 	
 	mapping: {
-		"index" 					: {
+		"index" : {
 			"url":"/users", 
 			"method":"get", 
 			"description":"retrieve all registered users",
 			"auth":false
 		},
-		"create"					: {
+		"create" : {
 			"url":"/users", 
 			"method":"put",
 			"description":"create a new user",
 			"auth":false
 		},
-		"get_my_friends" 	: {
+		"get_my_friends" : {
 			"url":"/users/my/friends", 
 			"method":"get",
 			"description":"get all your friends",
 			"auth":true
 		},
-		"read"						: {
+		"read" : {
 			"url":"/users/:id", 
 			"method":"get",
 			"description":"NEEDS TO BE UPDATED get a single user by id",
 			"auth":false
 		},
-		"update"					: {
+		"update" : {
 			"url":"/users", 
 			"method":"post",
 			"description":"NEEDS TO BE UPDATED update a given user",
 			"auth":false
 		},
-		"delete"					: {
+		"delete" : {
 			"url":"/me", 
 			"method":"delete",
 			"description":"delete your own user, attention: cant be undone",
 			"auth":true
 		}, 
-		"sign_in"					: {
+		"sign_in" : {
 			"url":"/users/sign_in", 
 			"method":"post",
 			"description":"sign yourself in",
 			"auth":false
 		},
-		"add_friend" 			: {
+		"add_friend" : {
 			"url":"/users/add_friend/:user_id", 
 			"method":"post",
 			"description":"add a friend by user_id",
 			"auth":true
 		}, 
-		"find_users"		: {
+		"find_users" : {
 			"url":"/users/find/:param",
 			"method":"get",
 			"description":"find users whose name or prename start with the given param",

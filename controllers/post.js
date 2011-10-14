@@ -7,13 +7,13 @@ var auth 			= require("../util/authorized_controller");
 module.exports = {
 	
 	mapping: {
-		"create"				: {
+		"create" : {
 			"url":"/posts",
 			"method":"put",
 			"description":"create a new post",
 			"auth":true
 		},
-		"get_my_posts"	: {
+		"get_my_posts" : {
 			"url":"/posts",
 			"method":"get",
 			"description":"get posts written by yourself",

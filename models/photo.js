@@ -15,11 +15,11 @@ mongoose.model("MarkOnPhoto", MarkOnPhoto);
 
 var Photo = new Schema({
 	user 				: ObjectId,
-	filename		: String,
-	description : String,
-	comments		: [Comment],
+	filename			: String,
+	description 		: String,
+	comments			: [Comment],
 	marks				: [MarkOnPhoto],
-	created_at	:	{type : Date, default : Date.now}
+	created_at			: {type : Date, default : Date.now}
 });
 
 exports.Photo = Photo;
