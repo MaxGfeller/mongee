@@ -1,0 +1,14 @@
+{
+	"name": "mongee",
+	"version": "0.1.1",
+	"description": "Open source social network on top of node.js and MongoDB",
+	"author": "Mongee developer team",
+	"contributors": [
+		"Max Gfeller <max.gfeller@gmail.com>"
+	],
+	"dependencies": {
+		"mongoose": "3.0.1",
+		"express": "3.0.0rc3",
+		"formidable": "1.0.11"
+	}
+}
