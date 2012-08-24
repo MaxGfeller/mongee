@@ -12,7 +12,7 @@ var db_name			= "mongee-dev";
 var app_version		= "0.0.1";
 var app_port		= 3000;
 
-var app 			= express.createServer();
+var app 			= express();
 var db				= mongoose.connect("mongodb://" + db_host + "/" + db_name);
 
 /*
@@ -30,8 +30,7 @@ mongoose.model("Photo", require("./models/photo").Photo);
 
 app.configure(function(){
 	app.use(express.logger({ format: ':method :url :status' }));
-	//app.use(express.staticProvider(__dirname + '/public'));
-	//app.use(express.bodyDecoder());
+	app.use("/", express.static(__dirname + "/public"));
 	app.use(express.methodOverride());
 	
 	controller.bootControllers(app);
