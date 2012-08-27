@@ -4,20 +4,21 @@ var Schema			= mongoose.Schema;
 var ObjectId		= Schema.ObjectId;
 
 var User = new Schema({
-	mail			: {type : String, index : true, required : true, safe : true},
-	name 			: String,
-	prename			: String, 
+	email			: {type : String, index : true, required : true, safe : true},
+	lastName		: String,
+	firstName		: String, 
 	password 		: String,
 	birthday		: String,
-	created_at		: {type : Date, default : Date.now},
-	friends			: [ObjectId]
+	createdAt		: {type : Date, default: Date.now},
+	friends			: [ObjectId],
+	state			: {type: String, default: "notVerified"}
 });
 
-User.path("name").set(function(v){
+User.path("lastName").set(function(v){
 	return v.capitalize();
 });
 
-User.path("prename").set(function(v){
+User.path("firstName").set(function(v){
 	return v.capitalize();
 });
 
