@@ -1,4 +1,5 @@
 var mongoose		= require("mongoose");
+var nodemailer		= require("nodemailer");
 
 var User 			= mongoose.model("User");
 var auth 			= require("../util/authorized_controller");
@@ -22,12 +23,6 @@ module.exports = {
 			"description":"retrieve all registered users",
 			"auth":false
 		},
-		"create" : {
-			"url":"/users", 
-			"method":"put",
-			"description":"create a new user",
-			"auth":false
-		},
 		"get_my_friends" : {
 			"url":"/users/my/friends", 
 			"method":"get",
@@ -45,6 +40,12 @@ module.exports = {
 			"method":"post",
 			"description":"NEEDS TO BE UPDATED update a given user",
 			"auth":false
+		},
+		"verify" : {
+			"url": "/users/verify/:id",
+			"method": "get",
+			"description": "Verify your email adress",
+			"auth": false
 		},
 		"delete" : {
 			"url":"/me", 
@@ -90,11 +91,60 @@ module.exports = {
 		});
 	}, 
 	
+	// GET /users/verify/:id
+	verify: function(req, res) {
+		User.findOne({_id: req.params.id}, function(error, user) {
+			if(error) {
+				res.send("There was an error", 404);
+			} else {
+				user.state = "verified";
+
+				user.save(function(err) {
+					if(err) {
+						res.send("There was an error", 500);
+					}
+
+					res.send("Awesome!");
+				});
+			}
+		})
+	},
+
 	// POST /users
 	update: function(req, res) {
 		User.findOne({_id : req.body.user.id}, function(error, user){
 			if(error) {
-				res.send("problem occured", 404);
+
+				var user = new User();
+
+				user.firstName = req.body.user.firstName;
+				user.lastName = req.body.user.lastName;
+				user.username = req.body.user.username;
+				user.email = req.body.user.email;
+				user.password = req.body.user.password;
+
+				user.save(function(err){
+					if(!err) {
+						// Send mail
+						var transport = nodemailer.createTransport("SMTP", {
+						    service: "Gmail",
+						    auth: {
+						        user: "max.gfeller@gmail.com",
+						        pass: "giniJ4n1nx3"
+						    }
+						});
+						transport.sendMail({
+							from: "'Mongee'<max.gfeller@gmail.com>",
+							to: user.email,
+							subject: "Deine Registrierung bei Mongee",
+							text: "Bitte bestätige deine Email Adresse: http://localhost:3000/users/verify/" + user._id 
+						}, function() {
+							res.send(JSON.stringify(user), 200);
+						});
+					} else {
+						res.send(err.message, 403);
+					}
+				});
 			} else {
 				for(var key in req.body.user) {
 					user.doc[key] = req.body.user[key];
@@ -106,23 +156,6 @@ module.exports = {
 						res.send("ok", 200);
 					}
 				});
-			}
-		});
-	}, 
-	
-	// PUT /users
-	create: function(req, res) {
-		var user = new User();
-	
-		for(var key in req.body.user) {
-			user.doc[key] = req.body.user[key];
-		}
-		
-		user.save(function(err){
-			if(!err) {
-				res.send(JSON.stringify(user), 200);
-			} else {
-				res.send(err.message, 403);
 			}
 		});
 	}, 
