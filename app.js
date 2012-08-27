@@ -3,6 +3,7 @@ var fs				= require("fs");
 var mongoose		= require("mongoose");
 var express			= require("express");
 var controller		= require("./util/controller");
+var nodemailer		= require("nodemailer");
 
 var Schema			= mongoose.Schema;
 var ObjectId		= Schema.ObjectId;
@@ -32,8 +33,16 @@ app.configure(function(){
 	app.use(express.logger({ format: ':method :url :status' }));
 	app.use("/", express.static(__dirname + "/public"));
 	app.use(express.methodOverride());
+	app.use(express.bodyParser());
+
+	var engines = require('consolidate');
+	app.engine('html', engines.hogan);
 	
 	controller.bootControllers(app);
+
+	app.get("/welcome", function(req, res) {
+		res.render(__dirname + "/views/welcome.html");
+	})
 	
 	console.log("mongee version " + app_version + " now running on port " + app_port);
 });
