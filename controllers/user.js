@@ -130,7 +130,7 @@ module.exports = {
 						    service: "Gmail",
 						    auth: {
 						        user: "max.gfeller@gmail.com",
-						        pass: "giniJ4n1nx3"
+						        pass: "************"
 						    }
 						});
 						transport.sendMail({
