@@ -117,11 +117,11 @@ module.exports = {
 
 				var user = new User();
 
-				user.firstName = req.body.user.firstName;
-				user.lastName = req.body.user.lastName;
-				user.username = req.body.user.username;
-				user.email = req.body.user.email;
-				user.password = req.body.user.password;
+				user.firstName 	= req.body.user.firstName;
+				user.lastName 	= req.body.user.lastName;
+				user.username 	= req.body.user.username;
+				user.email 		= req.body.user.email;
+				user.password 	= req.body.user.password;
 
 				user.save(function(err){
 					if(!err) {
@@ -178,10 +178,15 @@ module.exports = {
 		var u = null;
 	
 		if(req.body.user.mail && req.body.user.password) {
-			User.findOne({mail : req.body.user.mail}, function(error, user){
+			console.log(req.body.user.mail);
+			User.findOne({email : req.body.user.mail}, function(error, user){
+				if(error) 
+					console.log(error);
 				if(user) {
 					if(user.password == req.body.user.password) {
-						res.send(JSON.stringify(user), 200);
+						res.cookie("user", user);
+
+						res.redirect("/");
 					} else {
 						res.send("password is not correct", 401);
 					}

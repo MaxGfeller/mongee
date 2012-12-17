@@ -44,11 +44,18 @@ module.exports = {
 		auth.handle_authorized_request(req, res, function(req, res, user){
 			var post = new Post();
 			
-			for(var key in req.body.post) {
-				post.doc[key] = req.body.post[key];
-			}
-			
-			post.doc["user"] = user.get("_id");
+			// for(var key in req.body.post) {
+			// 	post.doc[key] = req.body.post[key];
+			// }
+
+			console.log("creating post");
+			console.log(req.body);
+
+			post.content = req.body.content;
+			post.firstName = req.body.firstName;
+			post.lastName = req.body.lastName;
+
+			post.user = user.get("_id");
 			
 			post.save(function(err){
 				if(!err) {

@@ -4,15 +4,15 @@ var User = mongoose.model("User");
 
 function get_credentials_from_request(header_value) {
 	var value;
-  if (value = header_value.match("^Basic\\s([A-Za-z0-9+/=]+)$")) {
-  	var auth = (new Buffer(value[1] || "", "base64")).toString("ascii");
-  	return {
-    	id : auth.slice(0, auth.indexOf(':')),
-    	password : auth.slice(auth.indexOf(':') + 1, auth.length)
-  	};
-  } else {
-  	return null;
-  }
+  	if (value = header_value.match("^Basic\\s([A-Za-z0-9+/=]+)$")) {
+  		var auth = (new Buffer(value[1] || "", "base64")).toString("ascii");
+  		return {
+    		id : auth.slice(0, auth.indexOf(':')),
+    		password : auth.slice(auth.indexOf(':') + 1, auth.length)
+  		};
+  	} else {
+  		return null;
+  	}
 }
 
 module.exports = {
@@ -20,7 +20,12 @@ module.exports = {
 		var user_id = null;
 		var user_password = null;
 		
-		var auth = get_credentials_from_request(req.headers['authorization']);
+		console.log(req.cookies.user);
+
+		var auth = { id: req.cookies.user._id, password: req.cookies.user.password };
+		console.log(auth);
+
+		//var auth = get_credentials_from_request(req.headers['authorization']);
 		if(auth) {
 			user_id = auth.id;
 			user_password = auth.password;
@@ -35,7 +40,8 @@ module.exports = {
 				}
 			});
 		} else {
-			res.send("not authorized, please login first", 403);
+			// res.send("not authorized, please login first", 403);
+			res.redirect("/welcome");
 		}
 	}
 }

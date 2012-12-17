@@ -34,6 +34,7 @@ app.configure(function(){
 	app.use("/", express.static(__dirname + "/public"));
 	app.use(express.methodOverride());
 	app.use(express.bodyParser());
+	app.use(express.cookieParser());
 
 	var engines = require('consolidate');
 	app.engine('html', engines.hogan);
@@ -42,6 +43,14 @@ app.configure(function(){
 
 	app.get("/welcome", function(req, res) {
 		res.render(__dirname + "/views/welcome.html");
+	})
+
+	app.get("/", function(req, res) {
+		if(req.cookies && req.cookies.user) {
+			res.render(__dirname + "/views/index.html");
+		} else {
+			res.redirect("/welcome");
+		}
 	})
 	
 	console.log("mongee version " + app_version + " now running on port " + app_port);

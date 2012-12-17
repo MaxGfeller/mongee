@@ -37,11 +37,11 @@
 <div id="header-container">
 
 	<div id="login-container">
-	<form class="form-inline">
-	  <input type="text" class="input-small" placeholder="Email">
-	  <input type="password" class="input-small" placeholder="Passwort">
+	<form class="form-inline" method="post" action="users/sign_in">
+	  <input type="text" name="user[mail]" class="input-small" placeholder="Email">
+	  <input type="password" name="user[password]" class="input-small" placeholder="Passwort">
 	  <label class="checkbox">
-	    <input type="checkbox"> Angemeldet bleiben
+	    <input type="checkbox" name="stay_logged_in"><span style="color: white;"> Angemeldet bleiben</span>
 	  </label>
 	  <button type="submit" class="btn">Anmelden</button>
 	</form>
