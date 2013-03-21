@@ -1,5 +1,7 @@
 (function($) {
-	User = Backbone.Model.extend({
+	"use strict";
+
+	var User = Backbone.Model.extend({
 		name: null,
 		firstName: null,
 		birthDate: null,
@@ -22,28 +24,45 @@
 				self.set("latestPost", postModel.get("date"));
 				self.get("posts").add(postModel);
 			});
+		},
+
+		getFriendProposals: function(cb) {
+			$.ajax({
+				url: "users/friend_proposals",
+				type: "get"
+			}).done(function(data) {
+				// console.debug('data', data);
+				cb($.parseJSON(data));
+			});
+		},
+
+		getUserById: function(id, cb) {
+			$.ajax({
+				url: "users/" + id,
+				type: "get"
+			}).done(function(data) {
+				cb($.parseJSON(data));
+			});
 		}
 	});
 
-	Users = Backbone.Collection.extend({
+	var Users = Backbone.Collection.extend({
 		url: "users"
 	});
 
-	Post = Backbone.Model.extend({
+	var Post = Backbone.Model.extend({
 		url: "posts"
 	});
 
-	Posts = Backbone.Collection.extend({
+	var Posts = Backbone.Collection.extend({
 		model: Post,
 		url: "posts/wall",
 		initialize: function(models, options) {
-			// if(options) {
-				this.bind("add", options.view.addPostToStream);
-			// }
+			this.bind("add", options.view.addPostToStream);
 		}
 	});
 
-	NewsView = Backbone.View.extend({
+	var NewsView = Backbone.View.extend({
 		el: $("#news-view"),
 		initialize: function() {
 
@@ -54,7 +73,25 @@
 		}
 	});
 
-	AppView = Backbone.View.extend({
+	var FriendProposalsView = Backbone.View.extend({
+		el: $('#friends-container'),
+		initialize: function(userModel) {
+			console.log('loading friend proposals');
+
+			this.user = userModel;
+			this.render();
+		},
+		render: function() {
+			this.user.getFriendProposals(function(data) {
+				// console.log(data);
+				var tmplMarkup = $("#tmpl-friends-proposal").html();
+				var compiledTmpl = _.template(tmplMarkup, {users: data});
+				$('#friends-container').append(compiledTmpl);
+			});
+		}
+	});
+
+	var AppView = Backbone.View.extend({
 		el: $("body"),
 		user: null,
 		initialize: function(userModel) {
@@ -69,7 +106,7 @@
 			// set the status
 			var currentStatus = this.user.get("currentStatus");
 
-			if(currentStatus == null)
+			if(currentStatus === null)
 				currentStatus = "<span style='color: grey'>click to edit status</span>";
 
 			$("#current-user-status").html(currentStatus);
@@ -84,21 +121,21 @@
 				$("#new-post").val("");
 
 				// cancel if user has entered nothing
-				if(new_post == "")
-					return
+				if(new_post === "")
+					return;
 
 				var newPost = new Post();
 				//newPost.set({ date: new Date(), content: '<div id="post-entry"><i class="icon-th-large" />&nbsp;&nbsp;&nbsp;<b>Max</b><br>' + new_post + ' <span class="date">am ' + post_date +'</span><div id="posts-addendum"><a href="#">i like</a> </div></div>' });
-				
+
 				newPost.set({ date: new Date(), content: new_post, firstName: loggedInUser.firstName, lastName: loggedInUser.lastName });
 
 				this.user.postSomething(newPost);
 
 			},
-			
+
 			"click #current-user-status": function() {
 				if(!($("#current-user-status").html().indexOf("<input") > -1)) {
-					$("#current-user-status").html("<input type='text' id='new-status' value='" + (this.user.get("currentStatus") == null ? "" : this.user.get("currentStatus")) + "'' /><button id='update-status-update'>update status</button><button id='cancel-status-update'>cancel</button>");
+					$("#current-user-status").html("<input type='text' id='new-status' value='" + (this.user.get("currentStatus") === null ? "" : this.user.get("currentStatus")) + "'' /><button id='update-status-update'>update status</button><button id='cancel-status-update'>cancel</button>");
 				}
 			},
 
@@ -106,7 +143,7 @@
 				var new_status = $("#new-status").val();
 
 				this.user.set("currentStatus", new_status);
-				
+
 				$("#current-user-status").html(new_status); // does not work?
 				document.getElementById("current-user-status").innerHtml = new_status;
 			},
@@ -122,7 +159,9 @@
 	var AppRouter = Backbone.Router.extend({
 		routes: {
 			"profile": "profileRoute",
-			"news": "newsRoute"
+			"profile/:id": "profileRoute",
+			"news": "newsRoute",
+			"": "newsRoute"
 		},
 
 		newsRoute: function() {
@@ -144,22 +183,28 @@
 			});
 		},
 
-		profileRoute: function() {
+		profileRoute: function(id) {
 			// load user info
 			var users = new Users();
-			var user = users.fetch({
-				success: function(userCollection) {
 
-					userCollection.each(function(user) {
-						// Load template
-						var tmplMarkup = $("#tmpl-profile").html();
-						var compiledTmpl = _.template(tmplMarkup, {user: user.attributes});
 
-						$("#posts-body *").html("");
-						$("#posts-body").html(compiledTmpl);
-					});
-				}
-			});
+			var renderView = function(data) {
+				var tmplMarkup = $("#tmpl-profile").html();
+				var compiledTmpl = _.template(tmplMarkup, {user: data});
+
+				$("#posts-body *").html("");
+				$("#posts-body").html(compiledTmpl);
+			};
+
+			if(id) {
+				var user = new User();
+				user.getUserById(id, function(data) {
+					renderView(data);
+				});
+			} else {
+				console.debug('logged in user', loggedInUser);
+				renderView(loggedInUser);
+			}
 		}
 	});
 
@@ -170,14 +215,14 @@
 	// initialize model and view
 	var userModel = new User({ firstName: "Max", name: "Gfeller" });
 	var appView = new AppView(userModel);
+	var friendProposalsView = new FriendProposalsView(userModel);
 
 	var loggedInUser = eval("(" + $.cookie("user").substring(2) + ")");
 
 	$("#username").html(loggedInUser.firstName + " " + loggedInUser.lastName);
 
 	$(document).ready(function() {
-		
+
 	});
-	
 
 })(jQuery);
