@@ -58,6 +58,10 @@
 				</div>
 			</div>
 		</div>
+		<div id="friends-container">
+			Finde Freunde welche auch auf Mongee sind!
+			<br><br>
+		</div>
 	</div>
 	<div id="content-bottom"></div>
 </div>
@@ -67,6 +71,15 @@
 
 Name: <%= user.firstName + " " + user.lastName %>
 
+</script>
+
+<script id="tmpl-friends-proposal" type="text/template">
+<%_.forEach(users, function (u) {%>
+<div class="friend_proposal">
+<a href="#profile/<%= u._id %>"><%=u.firstName%> <%=u.lastName%></a><br>
+<button class="btn btn-small btn-primary">Als Freund hinzufügen</button>
+</div>
+<%})%>
 </script>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
