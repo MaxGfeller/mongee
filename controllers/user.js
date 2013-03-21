@@ -1,42 +1,42 @@
-var mongoose		= require("mongoose");
-var nodemailer		= require("nodemailer");
+var mongoose = require("mongoose");
+var nodemailer = require("nodemailer");
 
-var User 			= mongoose.model("User");
-var auth 			= require("../util/authorized_controller");
+var User = mongoose.model("User");
+var auth = require("../util/authorized_controller");
 
 function classify(arg) {
 	return Object.prototype.toString.call(arg);
 }
 
-String.prototype.capitalize = function(){ 
+String.prototype.capitalize = function(){
     return this.replace(/\w+/g, function(a){
         return a.charAt(0).toUpperCase() + a.substr(1).toLowerCase();
     });
 };
 
 module.exports = {
-	
+
 	mapping: {
 		"index" : {
-			"url":"/users", 
-			"method":"get", 
+			"url":"/users",
+			"method":"get",
 			"description":"retrieve all registered users",
 			"auth":false
 		},
 		"get_my_friends" : {
-			"url":"/users/my/friends", 
+			"url":"/users/my/friends",
 			"method":"get",
 			"description":"get all your friends",
 			"auth":true
 		},
 		"read" : {
-			"url":"/users/:id", 
+			"url":"/users/:id",
 			"method":"get",
 			"description":"NEEDS TO BE UPDATED get a single user by id",
 			"auth":false
 		},
 		"update" : {
-			"url":"/users", 
+			"url":"/users",
 			"method":"post",
 			"description":"NEEDS TO BE UPDATED update a given user",
 			"auth":false
@@ -48,11 +48,11 @@ module.exports = {
 			"auth": false
 		},
 		"delete" : {
-			"url":"/me", 
+			"url":"/me",
 			"method":"delete",
 			"description":"delete your own user, attention: cant be undone",
 			"auth":true
-		}, 
+		},
 		"sign_in" : {
 			"url":"/users/sign_in", 
 			"method":"post",
@@ -70,6 +70,12 @@ module.exports = {
 			"method":"get",
 			"description":"find users whose name or prename start with the given param",
 			"auth":true
+		},
+		"get_friend_proposals": {
+			"url":"/users/friend_proposals",
+			"method":"get",
+			"description":"find users that you could add as friend",
+			"auth":true
 		}
 	},
 	
@@ -77,17 +83,6 @@ module.exports = {
 	index: function(req, res) {
 		User.find({}, function(error, users){
 			res.send(users);
-		});
-	}, 
-	
-	// GET /users/:id
-	read: function(req, res) {
-		User.findOne({_id : req.params.id}, function(error, user){
-			if(error) {
-				res.send("no user found", 404);
-			} else {
-				res.send(JSON.stringify(user), 200);
-			}
 		});
 	}, 
 	
@@ -214,7 +209,7 @@ module.exports = {
 				}
 			});
 		});
-	}, 
+	},
 	
 	// GET /users/my/friends
 	get_my_friends: function(req, res) {
@@ -229,7 +224,7 @@ module.exports = {
 				}
 			});
 		});
-	}, 
+	},
 	
 	// GET /users/find/:param
 	find_users: function(req, res) {
@@ -242,6 +237,36 @@ module.exports = {
 					res.send("no users found", 404);
 				}
 			});
+		});
+	},
+
+	// GET /users/friend_proposals
+	get_friend_proposals: function(req, res) {
+		auth.handle_authorized_request(req, res, function(req, res, user){
+			User.find({}, function(err, users){
+				if(users) {
+					console.log(user);
+					// filter friends
+					for(var i = 0; i < users.length; i++) {
+
+						var u = users[i];
+					}
+					res.send(JSON.stringify(users), 200);
+				} else {
+					res.send("no users found", 404);
+				}
+			});
+		});
+	},
+
+	// GET /users/:id
+	read: function(req, res) {
+		User.findOne({_id : req.params.id}, function(error, user){
+			if(error) {
+				res.send("no user found", 404);
+			} else {
+				res.send(JSON.stringify(user), 200);
+			}
 		});
 	}
 	
