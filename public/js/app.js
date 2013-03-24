@@ -14,7 +14,7 @@
 		postSomething: function(postModel) {
 			var self = this;
 
-			var loggedInUser = eval("(" + $.cookie("user").substring(2) + ")");
+			var loggedInUser = $.localStorage('loggedInUser');//$.parseJSON($.cookie("user"));
 
 			$.ajax({
 				url: "/posts",
@@ -31,7 +31,6 @@
 				url: "users/friend_proposals",
 				type: "get"
 			}).done(function(data) {
-				// console.debug('data', data);
 				cb($.parseJSON(data));
 			});
 		},
@@ -113,7 +112,7 @@
 		},
 		events: {
 			"click #submit-new-post": function() {
-				var loggedInUser = eval("(" + $.cookie("user").substring(2) + ")");
+				var loggedInUser = $.localStorage('loggedInUser');//eval("(" + $.cookie("user").substring(2) + ")");
 				var new_post = $("#new-post").val().trim();
 				var post_date = new Date();
 
@@ -134,7 +133,7 @@
 			},
 
 			"click #current-user-status": function() {
-				if(!($("#current-user-status").html().indexOf("<input") > -1)) {
+				if(($("#current-user-status").html().indexOf("<input") === -1)) {
 					$("#current-user-status").html("<input type='text' id='new-status' value='" + (this.user.get("currentStatus") === null ? "" : this.user.get("currentStatus")) + "'' /><button id='update-status-update'>update status</button><button id='cancel-status-update'>cancel</button>");
 				}
 			},
@@ -217,7 +216,8 @@
 	var appView = new AppView(userModel);
 	var friendProposalsView = new FriendProposalsView(userModel);
 
-	var loggedInUser = eval("(" + $.cookie("user").substring(2) + ")");
+	$.localStorage('loggedInUser', eval("(" + $.cookie("user").substring(2) + ")"));//eval("(" + $.cookie("user").substring(2) + ")");
+	var loggedInUser = $.localStorage('loggedInUser');
 
 	$("#username").html(loggedInUser.firstName + " " + loggedInUser.lastName);
 
