@@ -1,6 +1,7 @@
 var mongoose		= require("mongoose");
 
 var Post 			= mongoose.model("Post");
+var User 			= mongoose.model("User");
 var Comment 		= mongoose.model("Comment");
 var auth 			= require("../util/authorized_controller");
 
@@ -18,7 +19,13 @@ module.exports = {
 			"method":"get",
 			"description":"get posts written by yourself",
 			"auth":true
-		}, 
+		},
+		"get_newsfeed" : {
+			"url": "/newsfeed",
+			"method": "get",
+			"description": "Get all posts on your feed",
+			"auth": true
+		},
 		"get_posts_on_my_wall" : {
 			"url":"/posts/wall",
 			"method":"get",
@@ -80,6 +87,24 @@ module.exports = {
 		});
 	}, 
 	
+	// GET /newsfeed
+	get_newsfeed: function(req, res) {
+		auth.handle_authorized_request(req, res, function(req, res, user) {
+			var userIds = [user._id.toString()];
+			user.friends.forEach(function(friend) {
+				userIds.push(friend.toString());
+			});
+			
+			console.log(userIds);
+
+			Post.find({user: {$in: userIds}}, function(err, records) {
+				console.log('waaat');
+				console.log(records);
+				res.send(JSON.stringify(records), 200);
+			});
+		});
+	},
+
 	// GET /posts/wall
 	get_posts_on_my_wall : function(req, res) {
 		auth.handle_authorized_request(req, res, function(req, res, user){
