@@ -246,10 +246,13 @@ module.exports = {
 			User.find({}, function(err, users){
 				if(users) {
 					console.log(user);
-					// filter friends
+					// TODO: filter friends
 					for(var i = 0; i < users.length; i++) {
-
 						var u = users[i];
+						
+						if(u._id.toString() === user._id.toString()) {
+							delete users[i];
+						}
 					}
 					res.send(JSON.stringify(users), 200);
 				} else {
@@ -269,5 +272,4 @@ module.exports = {
 			}
 		});
 	}
-	
 }
