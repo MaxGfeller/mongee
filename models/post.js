@@ -6,10 +6,10 @@ var ObjectId		= Schema.ObjectId;
 var Comment 		= mongoose.model("Comment");
 
 var Post = new Schema({
-	user			: ObjectId,
+	user			: String,
 	firstName		: String,
 	lastName		: String,
-	on_wall			: [ObjectId],
+	on_wall			: [String],
 	content			: String,
 	link		 	: String,
 	comment			: [Comment],
