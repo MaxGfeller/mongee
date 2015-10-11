@@ -2,10 +2,23 @@
 	"name": "mongee",
 	"version": "0.1.1",
 	"description": "Open source social network on top of node.js and MongoDB",
+    "main": "app.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/MaxGfeller/mongee.git"
+    },
 	"author": "Mongee developer team",
 	"contributors": [
-		"Max Gfeller <max.gfeller@gmail.com>"
+        {
+            "name:": "Josh Terrill",
+            "email": "joshterrill.dev@gmail.com"
+        }
 	],
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/MaxGfeller/mongee/issues"
+    },
+    "homepage": "https://github.com/MaxGfeller/mongee#readme",
 	"dependencies": {
 		"mongoose": "3.0.1",
 		"express": "3.0.0rc3",
