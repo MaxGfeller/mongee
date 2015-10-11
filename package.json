@@ -1,32 +1,35 @@
 {
-  "name": "mongee",
-  "version": "0.1.1",
-  "description": "Open source social network on top of node.js and MongoDB",
-  "main": "app.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MaxGfeller/mongee.git"
-  },
-  "author": "Mongee developer team",
-  "contributors": [
-    {
-      "name:": "Josh Terrill",
-      "email": "joshterrill.dev@gmail.com"
+    "name": "mongee",
+    "version": "0.1.1",
+    "description": "Open source social network on top of node.js and MongoDB",
+    "main": "app.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/MaxGfeller/mongee.git"
+    },
+    "author": "Mongee developer team",
+    "contributors": [
+        {
+            "name:": "Josh Terrill",
+            "email": "joshterrill.dev@gmail.com"
+        }
+    ],
+    "scripts" : {
+        "start" : "node app.js"
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/MaxGfeller/mongee/issues"
+    },
+    "homepage": "https://github.com/MaxGfeller/mongee#readme",
+    "dependencies": {
+        "consolidate": "^0.13.1",
+        "express": "^4.13.3",
+        "formidable": "^1.0.17",
+        "hogan.js": "^3.0.2",
+        "jade": "^1.11.0",
+        "mongoose": "^4.1.10",
+        "nodemailer": "^1.8.0",
+        "restify": "^4.0.3"
     }
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/MaxGfeller/mongee/issues"
-  },
-  "homepage": "https://github.com/MaxGfeller/mongee#readme",
-  "dependencies": {
-    "consolidate": "^0.13.1",
-    "express": "^4.13.3",
-    "formidable": "^1.0.17",
-    "hogan.js": "^3.0.2",
-    "jade": "^1.11.0",
-    "mongoose": "^4.1.10",
-    "nodemailer": "^1.8.0",
-    "restify": "^4.0.3"
-  }
 }
