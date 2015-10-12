@@ -1,19 +1,43 @@
 {
-	"name": "mongee",
-	"version": "0.1.1",
-	"description": "Open source social network on top of node.js and MongoDB",
-	"author": "Mongee developer team",
-	"contributors": [
-		"Max Gfeller <max.gfeller@gmail.com>"
-	],
-	"dependencies": {
-		"mongoose": "3.0.1",
-		"express": "3.0.0rc3",
-		"restify": "1.4.4",
-		"formidable": "1.0.11",
-		"jade": "0.27.2",
-		"consolidate": "0.4.0",
-		"hogan.js": "2.0.0",
-		"nodemailer": "0.3.22"
-	}
+  "name": "mongee",
+  "version": "0.1.1",
+  "description": "Open source social network on top of node.js and MongoDB",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaxGfeller/mongee.git"
+  },
+  "author": "Mongee developer team",
+  "contributors": [
+    {
+      "name:": "Josh Terrill",
+      "email": "joshterrill.dev@gmail.com"
+    }
+  ],
+  "scripts": {
+    "start": "node app.js"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MaxGfeller/mongee/issues"
+  },
+  "homepage": "https://github.com/MaxGfeller/mongee#readme",
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "consolidate": "^0.13.1",
+    "cookie-parser": "^1.4.0",
+    "express": "^4.13.3",
+    "formidable": "^1.0.17",
+    "hogan.js": "^3.0.2",
+    "jade": "^1.11.0",
+    "mongoose": "^4.1.10",
+    "morgan": "^1.6.1",
+    "nodemailer": "^1.8.0",
+    "restify": "^4.0.3"
+  },
+  "devdependencies": {
+    "browserify": "^2.0.0",
+    "gulp-cli": "^1.0.92",
+    "bower": "^2.0.3"
+  }
 }
